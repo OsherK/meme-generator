@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body class="flex flex-col space-between align-center" onload="onInit()">
+    <nav class="flex">
+        <div class="logo-container">
+            <img src="img\menu-icons\Logo.png" alt="Sad Pepe" class="logo">
+        </div>
+        <ul>
+            <li onclick="onRenderSavedMemes()">SAVED</li>
+            <li onclick="onRenderGallery()">GALLERY</li>
+        </ul>
+    </nav>
+    <div class="main-content ">
+        <div class="gallery">
+            <div class="search-container flex space-around">
+                <input oninput="renderImgs(this.value)" type="text" id="search-bar">
+                <div class="list-container">
+                    <ul class="keyword-list flex clean-list space-between">
+                    </ul>
+                </div>
+            </div>
+            <div class="gallery-grid-container">
+                <div class="gallery-grid grid space-around"></div>
+            </div>
+        </div>
+        <div class="design-interface flex space-around">
+            <div class="canvas-container">
+                <canvas onmousemove="onCanvasMove(event)" onmousedown="onCanvasDown(event)" onmouseup="onCanvasUp()" id="canvas" height="700" width="700"></canvas>
+            </div>
+            <div class="design-buttons flex flex-col align-center space-around">
+                <input oninput="onUpdateCanvas()" id="line-text" type="text" value="">
+                <div class="move-and-size flex space-around">
+                    <button onclick="onUpdateFont(1)" class="font-increase">A+</button>
+                    <button onclick="onUpdateFont(-1)" class="font-decrease">A-</button>
+                    <button onclick="onUpdateHeight(-10)" class="font-increase">H+</button>
+                    <button onclick="onUpdateHeight(10)" class="font-decrease">H-</button>
+                </div>
+                <div class="save-and-upload">
+                    <button onclick="onDownload()" class="save">Download</button>
+                    <button onclick="onSaveMeme()" class="save">Save</button>
+                </div>
+                <button onclick="onSwitchLine()" class="switch-line">&#8597</button>
+                <button onclick="onRenderSavedMemes()">To saved memes</button>
+            </div>
+        </div>
+        <div class="saved-memes">
+            <div class="saved-memes-grid grid"></div>
+        </div>
+    </div>
+    <footer>coffee rights&#169;</footer>
+    <script src="js/gallery-service.js"></script>
+    <script src="js/meme-service.js"></script>
+    <script src="js/saved-memes.js"></script>
+    <script src="js/gallery-controller.js"></script>
+    <script src="js/meme-controller.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
