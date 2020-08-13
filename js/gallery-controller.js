@@ -12,7 +12,7 @@ function renderImgs(str = '') {
         <div class="gallery-item" onclick="onRenderEditor(${img.id})">
             <img src="${img.url}" width="250" height="250">
                 <div class="img-details">
-                    <p>keyword:${keyStr}</p>
+                    <p>keywords:${keyStr}</p>
                 </div>
         </div>
         `
@@ -36,7 +36,7 @@ function renderKeywordList() {
         let fontSize = 15 + keywordsArray[i].value;
         if (fontSize >= 25) fontSize = 25;
         let liHtml = `
-        <li style="font-size:${fontSize}px" class="no-select" onclick="onKeywordClick('${keywordsArray[i].keyword}')"> ${keywordsArray[i].keyword}</li>
+        <li style="font-size:${fontSize}px" class="no-select search-li" onclick="onKeywordClick('${keywordsArray[i].keyword}')"> ${keywordsArray[i].keyword}</li>
         `
         if (i < 5) listHtml += liHtml;
         else dropDownListHtml += liHtml;
@@ -50,18 +50,4 @@ function onKeywordClick(val) {
     renderKeywordList();
     document.querySelector('.search-bar').value = val;
     renderImgs(val);
-}
-
-function onShowMore() {
-    document.querySelector('.drop-down-list').classList.toggle('shown-list');
-}
-
-//To the editor
-function onRenderEditor(id) {
-    initMeme();
-    updateSelectedImg(id);
-    document.querySelector('.design-interface').style.display = 'flex';
-    document.querySelector('.gallery').style.display = 'none';
-    renderCanvas();
-    renderStickerButtons()
 }

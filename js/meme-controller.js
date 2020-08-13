@@ -24,7 +24,7 @@ function renderStickers() {
         let drawnSticker = new Image();
         drawnSticker.src = sticker.src;
         drawnSticker.onload = () => {
-            gCtx.drawImage(drawnSticker, sticker.posX, sticker.posY, sticker.sizeX, sticker.sizeY);
+            gCtx.drawImage(drawnSticker, sticker.posX, sticker.posY, sticker.size, sticker.size);
         }
     })
 }
@@ -72,15 +72,15 @@ function onCanvasMouseDown(ev) {
     });
 
     if (gGrabbedItem) {
-        gMeme.selectedLineIdx = gMeme.lines.findIndex(line => line === gGrabbedItem);
         document.querySelector('#line-text').value = getLine().txt;
         document.body.style.cursor = 'grab';
     } else {
         gGrabbedItem = getAllStickers().find(sticker => {
-            return ev.offsetX > sticker.posX * aspectRatio && ev.offsetX < (sticker.posX + sticker.sizeX) * aspectRatio &&
-                ev.offsetY > sticker.posY * aspectRatio && ev.offsetY < (sticker.posY + sticker.sizeY) * aspectRatio;
+            return ev.offsetX > sticker.posX * aspectRatio && ev.offsetX < (sticker.posX + sticker.size) * aspectRatio &&
+                ev.offsetY > sticker.posY * aspectRatio && ev.offsetY < (sticker.posY + sticker.size) * aspectRatio;
         })
     }
+    if (gGrabbedItem) updateIndex();
 }
 
 function onCanvasRelease() {
@@ -89,6 +89,7 @@ function onCanvasRelease() {
 }
 
 function onCanvasMouseMove(ev) {
+    ev.preventDefault();
     isOnText(ev);
     if (!gGrabbedItem) return;
     document.body.style.cursor = 'grab';
@@ -128,10 +129,15 @@ function onCanvasTouchStart(ev) {
             offsetY > (line.posY - textHeight * 1.2) * aspectRatio && offsetY < line.posY * aspectRatio;
     });
     if (gGrabbedItem) {
-        gMeme.selectedLineIdx = gMeme.lines.findIndex(line => line === gGrabbedItem);
         document.querySelector('#line-text').value = getLine().txt;
         document.body.style.cursor = 'grab';
+    } else {
+        gGrabbedItem = getAllStickers().find(sticker => {
+            return offsetX > sticker.posX * aspectRatio && offsetX < (sticker.posX + sticker.size) * aspectRatio &&
+                offsetY > sticker.posY * aspectRatio && offsetY < (sticker.posY + sticker.size) * aspectRatio;
+        })
     }
+    if (gGrabbedItem) updateIndex();
 }
 
 function onCanvasTouchMove(ev) {
@@ -156,11 +162,6 @@ function onUpdateFont(num) {
     renderCanvas();
 }
 
-function onUpdateHeight(num) {
-    updateLineHeight(num);
-    renderCanvas();
-}
-
 function onSwitchLine() {
     switchLine();
     document.querySelector('#line-text').value = getLine().txt;
@@ -168,6 +169,17 @@ function onSwitchLine() {
 
 function onAddLine() {
     addLine();
+    renderCanvas();
+}
+
+function onAddSticker(id) {
+    addSticker(id);
+    renderCanvas();
+}
+
+function onUpdateStickerSize(num) {
+    if (!gMeme.stickers.length) return;
+    updateStickerSize(num);
     renderCanvas();
 }
 
@@ -191,10 +203,4 @@ function onSaveMeme() {
         memeData: getMeme()
     });
     saveMeme(savedMemes);
-}
-
-//Back to the gallery
-function onRenderGallery() {
-    document.querySelector('.design-interface').style.display = 'none';
-    document.querySelector('.gallery').style.display = 'block';
 }

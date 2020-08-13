@@ -9,14 +9,34 @@
 /*BASE*/
 
 html {
-    font-family: 'Poppins';
     background-color: #22252c;
     min-height: 100%;
     overflow-y: hidden;
 }
 
 html * {
+    font-family: 'Poppins';
     box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #22252c;
+}
+
+::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(-86deg, #33be6d 0%, #0c98b9 100%);
+    border-radius: 5px;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+    outline: none;
 }
 
 body {
@@ -30,22 +50,13 @@ header {
     background-color: black;
 }
 
-nav {
-    background-image: linear-gradient(-86deg, #33be6d 0%, #0c98b9 100%);
-    height: 10%;
-    width: 95%;
-    margin: 0.625rem auto;
-    border-radius: 40px;
-    padding: 10px 20px;
-}
-
 .logo-container {
     height: 100%;
+    margin-left: 20px;
 }
 
 .logo {
-    height: 80%;
-    border: 1px solid #383b42;
+    height: 100%;
 }
 
 footer {
@@ -60,6 +71,53 @@ footer {
 .main-content {
     height: 80%;
     width: 90%;
+}
+
+.design-interface,
+.gallery,
+.saved-memes {
+    border-radius: 20px;
+}
+
+
+/*NAV*/
+
+nav {
+    background-image: linear-gradient(-86deg, #33be6d 0%, #0c98b9 100%);
+    height: 10%;
+    width: 95%;
+    margin: 0.625rem auto;
+    border-radius: 40px;
+    padding: 10px 20px;
+}
+
+.nav-ul {
+    min-width: 500px;
+    padding: 0px;
+}
+
+.nav-li {
+    color: #fefefe;
+    font-size: 1.3125rem;
+    height: 40px;
+    width: 150px;
+    text-align: center;
+    padding-top: 5px;
+    border-radius: 40px;
+}
+
+.nav-li:hover {
+    background-color: #fff;
+    color: #88d2c4;
+}
+
+.nav-li:hover {
+    cursor: pointer;
+}
+
+.curr-page {
+    background-color: #fff;
+    color: #88d2c4;
 }
 
 
@@ -78,6 +136,11 @@ footer {
 .search-bar {
     height: 50px;
     width: 40%;
+    border-radius: 10px;
+    background-color: #22252c;
+    color: #76777c;
+    border: 0px;
+    padding-left: 20px;
 }
 
 .search-btn {
@@ -95,38 +158,57 @@ footer {
 .keyword-list {
     padding: 0px;
     align-items: center;
-    background-color: #fefefe;
+    box-shadow: 0 4px 2px -2px grey;
+    border-radius: 10px;
+    background-color: #87898d;
+    color: #fefefe;
     height: 50px;
     width: 85%;
 }
 
 .drop-down-list {
     padding: 0px;
-    height: 0px;
-    overflow: hidden;
+    max-height: 0px;
     position: absolute;
     width: 10%;
     right: 3.5%;
     visibility: hidden;
     opacity: 0;
-    transition: height .5s;
+    transition: max-height .8s ease-out, opacity .3s;
+    z-index: 2;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 2px -2px grey;
 }
 
-.shown-list {
+.more-keys:focus .drop-down-list {
     opacity: 100;
+    max-height: 50%;
     visibility: visible;
-    height: fit-content;
 }
 
 .drop-down-list li {
-    background-color: white;
+    background-color: #87898d;
     padding: 10px 0px;
+}
+
+.search-li:hover {
+    color: #21ac91;
 }
 
 .more-keys {
     width: 10%;
     height: 50px;
     padding: 0px;
+    background-image: linear-gradient(-86deg, #33be6d 0%, #0c98b9 100%);
+    color: #fefefe;
+    border-radius: 18px;
+    border: 0px;
+}
+
+.more-keys:active {
+    background-image: none;
+    background-color: #30d38f;
 }
 
 .grid {
@@ -146,7 +228,7 @@ footer {
 
 .img-details {
     position: relative;
-    bottom: 255px;
+    bottom: 257px;
     color: white;
     text-align: center;
     padding: 20px;
@@ -159,6 +241,12 @@ footer {
     transition: opacity .3s;
 }
 
+.gallery-item {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 4px -2px #26282d;
+}
+
 .gallery-item:hover .img-details {
     visibility: visible;
     opacity: 100;
@@ -168,32 +256,83 @@ footer {
 /*MEME EDITOR*/
 
 .design-interface {
-    background-color: #383b42;
-    height: 100%;
+    background-color: #22252c;
+    min-height: 100%;
+    max-height: 100%;
     padding: 1%;
 }
 
 .canvas-container {
-    box-sizing: unset;
+    overflow: hidden;
     display: block;
     height: 600px;
     width: 600px;
-    border: 1px solid black;
+    border: 10px solid #3a3f4b;
+    border-radius: 20px;
 }
 
 .design-buttons {
-    height: 100%;
-    min-width: 400px;
-    max-width: 40%;
-    border: 1px solid black;
-    background-color: #19a59f;
+    height: 600px;
+    align-self: center;
+    width: 40%;
+    background-color: #383b42;
+    box-shadow: 0 6px 2px -2px #33363e;
     border-radius: 20px;
     font-size: 1.5625rem;
 }
 
 .move-and-size {
-    width: 50%;
-    background-color: green;
+    width: 90%;
+    height: 60px;
+    align-items: center;
+    background-color: #19a59f;
+    border-radius: 10px;
+}
+
+.move-and-size * {
+    height: 50px;
+    width: 50px;
+    padding: 0px;
+}
+
+.menu-btn {
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0 6px 2px -2px grey;
+}
+
+.menu-btn:active {
+    background-color: #34e6dd;
+}
+
+.btn-img {
+    height: 70%;
+    width: 70%;
+}
+
+.save-and-upload {
+    width: 90%;
+    height: 50px;
+}
+
+.save-btn {
+    background-color: #1e7cd3;
+    color: #fefefe;
+    font-size: 1.5rem;
+    width: 40%;
+    border: 0px;
+    border-radius: 20px;
+    box-shadow: 0 6px 2px 0px #165c9c, 0 -6px 2px 0px #57b2e8;
+}
+
+.download-btn {
+    background-color: #8f44bb;
+    color: #fefefe;
+    font-size: 1.5rem;
+    width: 40%;
+    border: 0px;
+    border-radius: 20px;
+    box-shadow: 0 6px 2px 0px #632687, 0 -6px 2px 0px #bf84da;
 }
 
 #line-text {
@@ -201,6 +340,8 @@ footer {
     text-align: center;
     padding: 10px 0px;
     font-size: 1.5625rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 2px -2px grey;
 }
 
 .switch-line {
@@ -215,6 +356,7 @@ footer {
     background-color: #fff;
     height: fit-content;
     width: 90%;
+    border-radius: 10px;
 }
 
 .add-sticker-icon {
@@ -260,22 +402,38 @@ footer {
     justify-content: space-between;
 }
 
+.self-center {
+    align-self: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
 
 /*MEDIA QUERIES*/
 
 @media(max-width: 1260px) {
+    .in-editor .main-content {
+        overflow-y: scroll;
+    }
     .design-interface {
-        display: flex;
         flex-direction: column;
         align-items: center;
+        min-height: 1100px;
     }
     canvas,
     .canvas-container {
-        height: 500px;
+        min-height: 500px;
+        max-height: 500px;
         width: 500px;
     }
     .design-buttons {
-        margin-top: 10px;
-        height: 30%;
+        min-height: 500px;
+        max-height: 500px;
+        width: 600px;
+    }
+    #line-text {
+        font-size: 1rem;
     }
 }
