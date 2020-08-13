@@ -12,6 +12,7 @@ html {
     font-family: 'Poppins';
     background-color: #22252c;
     min-height: 100%;
+    overflow-y: hidden;
 }
 
 html * {
@@ -33,7 +34,7 @@ nav {
     background-image: linear-gradient(-86deg, #33be6d 0%, #0c98b9 100%);
     height: 10%;
     width: 95%;
-    margin: 0px auto;
+    margin: 0.625rem auto;
     border-radius: 40px;
     padding: 10px 20px;
 }
@@ -45,10 +46,10 @@ nav {
 .logo {
     height: 80%;
     border: 1px solid #383b42;
-    /* border-radius: 100%; */
 }
 
 footer {
+    bottom: 0px;
     width: 100%;
     height: 5%;
     text-align: center;
@@ -58,7 +59,7 @@ footer {
 
 .main-content {
     height: 80%;
-    width: 89%;
+    width: 90%;
 }
 
 
@@ -69,8 +70,63 @@ footer {
     height: 100%;
 }
 
-.search-bar {
+.search-container {
     height: 10%;
+    padding-top: 10px;
+}
+
+.search-bar {
+    height: 50px;
+    width: 40%;
+}
+
+.search-btn {
+    width: 20%;
+    height: 50px;
+    font-size: 1rem;
+    overflow: wrap;
+}
+
+.list-container {
+    height: 50px;
+    width: 50%;
+}
+
+.keyword-list {
+    padding: 0px;
+    align-items: center;
+    background-color: #fefefe;
+    height: 50px;
+    width: 85%;
+}
+
+.drop-down-list {
+    padding: 0px;
+    height: 0px;
+    overflow: hidden;
+    position: absolute;
+    width: 10%;
+    right: 3.5%;
+    visibility: hidden;
+    opacity: 0;
+    transition: height .5s;
+}
+
+.shown-list {
+    opacity: 100;
+    visibility: visible;
+    height: fit-content;
+}
+
+.drop-down-list li {
+    background-color: white;
+    padding: 10px 0px;
+}
+
+.more-keys {
+    width: 10%;
+    height: 50px;
+    padding: 0px;
 }
 
 .grid {
@@ -82,13 +138,10 @@ footer {
     grid-template-columns: repeat(auto-fit, 250px);
 }
 
-.gallery-grid-container {
+.gallery-grid-container,
+.saved-memes {
     height: 90%;
     overflow-y: scroll;
-}
-
-.gallery-grid {
-    margin-top: 50px;
 }
 
 .img-details {
@@ -100,7 +153,7 @@ footer {
     z-index: 1;
     height: 250px;
     width: 250px;
-    background-color: rgba(26, 25, 25, 0.2);
+    background-color: rgba(26, 25, 25, 0.4);
     visibility: hidden;
     opacity: 0;
     transition: opacity .3s;
@@ -121,18 +174,20 @@ footer {
 }
 
 .canvas-container {
+    box-sizing: unset;
     display: block;
-    height: 700px;
-    width: 700px;
+    height: 600px;
+    width: 600px;
     border: 1px solid black;
 }
 
 .design-buttons {
-    height: 700px;
+    height: 100%;
     min-width: 400px;
     max-width: 40%;
     border: 1px solid black;
-    background-color: blue;
+    background-color: #19a59f;
+    border-radius: 20px;
     font-size: 1.5625rem;
 }
 
@@ -153,11 +208,33 @@ footer {
     width: 30px;
 }
 
+.sticker-select-list {
+    padding: 10px 0px;
+    overflow-x: scroll;
+    height: 70px;
+    background-color: #fff;
+    height: fit-content;
+    width: 90%;
+}
+
+.add-sticker-icon {
+    height: 50px;
+    width: 50px;
+}
+
+.add-sticker-icon:not(:first-child) {
+    margin-left: 10px;
+}
+
 
 /*HELPERS*/
 
 .clean-list {
     list-style-type: none;
+}
+
+.no-select {
+    user-select: none;
 }
 
 
@@ -186,7 +263,7 @@ footer {
 
 /*MEDIA QUERIES*/
 
-@media(max-width: 1100px) {
+@media(max-width: 1260px) {
     .design-interface {
         display: flex;
         flex-direction: column;
@@ -199,6 +276,6 @@ footer {
     }
     .design-buttons {
         margin-top: 10px;
-        min-width: 90%;
+        height: 30%;
     }
 }

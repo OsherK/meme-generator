@@ -9,6 +9,9 @@ function onInit() {
     initMeme();
     renderImgs();
     document.querySelector('.design-interface').style.display = 'none';
+    document.querySelector('.saved-memes').style.display = 'none';
+    renderKeywordList();
+    getKeywordsArray();
 }
 
 function onRenderSavedMemes() {
