@@ -2,35 +2,37 @@
 <html lang="en">
 
 <head>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="style/main.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Meme Generator</title>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="icon" href="img\menu-icons\sad-pepe-icon.png" type="image/gif" sizes="16x16">
 </head>
 
 <body class="flex flex-col space-between align-center" onload="onInit()">
     <nav class="flex space-between">
-        <div class="logo-container justify-center" onclick="onRenderGallery()">
-            <img src="img\menu-icons\Logo.png" alt="Sad Pepe" class="logo">
-        </div>
+        <img onclick="onRenderGallery()" src="img\menu-icons\Logo.png" alt="Sad Pepe" class="logo">
         <ul class="flex clean-list nav-ul space-around">
-            <li class="nav-li nav-gallery" onclick="onRenderGallery()">GALLERY</li>
-            <li class="nav-li nav-saved" onclick="onRenderSavedMemes()">SAVED</li>
+            <li class="nav-li nav-gallery curr-page" onclick="onRenderGallery()"><span>GALLERY</span></li>
+            <li class="nav-li nav-saved" onclick="onRenderSavedMemes()"><span>SAVED</span></li>
         </ul>
     </nav>
     <div class="main-content ">
         <div class="gallery">
             <div class="search-container flex space-around">
-                <input oninput="onSearchInput(this.value)" type="text" class="search-bar" placeholder="Keywords">
+                <input onkeydown="onKeywordSubmit(this)" oninput="onSearchInput(this.value)" type="text" class="search-bar" placeholder="Keywords">
                 <div class="list-container flex space-around align-center">
                     <ul class="keyword-list flex clean-list space-around">
                     </ul>
-                    <button onclick="" class="more-keys no-select">
+                    <button onclick="onToggleDropDownList()" class="more-keys desktop-drop-down no-select">
                         more
                         <ul class="drop-down-list clean-list">
-                    </ul>
+                        </ul>
                 </button>
+                    <button onclick="onToggleMobileList()" class="mobile-drop-down more-keys no-select">☰
+                        <ul class="drop-down-list"></ul>
+                    </button>
 
                 </div>
             </div>
@@ -44,17 +46,24 @@
                     height="600" width="600"></canvas>
             </div>
             <div class="design-buttons flex flex-col align-center space-around">
-                <input oninput="onUpdateCanvas()" id="line-text" type="text" value="">
+                <input oninput="onUpdateCanvas()" class="line-text" type="text" value="">
                 <div class="move-and-size flex space-around">
-                    <button onclick="onUpdateFont(1)" class="menu-btn font-increase flex align-center justify-center"><img class="btn-img" src="img\menu-icons\Font-increase.png" alt="A+"></button>
-                    <button onclick="onUpdateFont(-1)" class="menu-btn font-decrease flex align-center justify-center"><img class="btn-img" src="img\menu-icons\Font-decrease.png" alt="A+"></button></button>
+                    <button onclick="onUpdateItemSize(1)" class="menu-btn font-increase flex align-center justify-center"><img class="btn-img" src="img\menu-icons\Font-increase.png" alt="A+"></button>
+                    <button onclick="onUpdateItemSize(-1)" class="menu-btn font-decrease flex align-center justify-center"><img class="btn-img" src="img\menu-icons\Font-decrease.png" alt="A+"></button></button>
                     <button onclick="onAddLine()" class="menu-btn add-line flex align-center justify-center"><img class="btn-img" src="img\menu-icons\plus.png" alt="+"></button>
                 </div>
                 <div class="sticker-select-list flex space-around">
                 </div>
                 <div class="move-and-size flex space-around">
-                    <button onclick="onUpdateStickerSize(10)" class="menu-btn font-increase flex align-center justify-center"><img class="btn-img" src="img\menu-icons\Font-increase.png" alt="A+"></button>
-                    <button onclick="onUpdateStickerSize(-10)" class="menu-btn font-decrease flex align-center justify-center"><img class="btn-img" src="img\menu-icons\Font-decrease.png" alt="A+"></button></button>
+                    <button onclick="onDelete(1)" class="menu-btn font-increase flex align-center justify-center"><img class="btn-img" src="img\menu-icons\delete.png" alt="A+"></button>
+                    <div class="menu-btn color-picker flex align-center justify-center">
+                        <img class="btn-img" src="img\menu-icons\color-picker-filling.png">
+                        <input oninput="onColorChange(this.value, 'filling')" type="color">
+                    </div>
+                    <div class="menu-btn color-picker flex align-center justify-center">
+                        <img class="btn-img" src="img\menu-icons\color-picker-outline.png">
+                        <input oninput="onColorChange(this.value, 'outline')" type="color">
+                    </div>
                 </div>
                 <div class="save-and-upload flex space-around">
                     <button onclick="onSaveMeme()" class="save-btn">Save</button>
@@ -65,15 +74,19 @@
         <div class="saved-memes">
             <div class="saved-memes-grid grid  space-around"></div>
         </div>
+        <div class="screen"></div>
+        <div class="popup-modal flex flex-col align-center space-around">
+            <span>Working</span>
+            <button onclick="togglePopupModal()">Close</button>
+        </div>
     </div>
-    <footer>coffee rights&#169;</footer>
-    <script src="https://kit.fontawesome.com/736bb015a5.js" crossorigin="anonymous"></script>
+    <footer><span>coffee rights&#169;</span></footer>
     <script src="js/meme-service.js"></script>
     <script src="js/gallery-service.js"></script>
     <script src="js/saved-memes.js"></script>
     <script src="js/gallery-controller.js"></script>
-    <script src="js/meme-controller.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/editor-controller.js"></script>
+    <script src="js/main-controller.js"></script>
 </body>
 
 </html>

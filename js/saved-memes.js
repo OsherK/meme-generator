@@ -8,7 +8,7 @@ function saveMeme(memes) {
     localStorage.setItem('saved-memes', JSON.stringify(memes));
 }
 
-function renderMemes() {
+function renderSavedMemes() {
     let strHtml = '';
     let memes = loadSavedMemes();
     memes.forEach(meme => {

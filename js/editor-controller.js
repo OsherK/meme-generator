@@ -2,6 +2,11 @@
 
 var gGrabbedItem = null;
 var gDragInitPos = null;
+var gCanvasScale = document.querySelector('.canvas-container').clientWidth / 600;
+
+function updateCanvasScale() {
+    gCanvasScale = document.querySelector('.canvas-container').clientWidth / 600;
+}
 
 function renderCanvas(id) {
     var img = new Image()
@@ -15,7 +20,7 @@ function renderCanvas(id) {
 
 function renderText() {
     let line = getLine();
-    document.querySelector('#line-text').value = line.txt;
+    document.querySelector('.line-text').value = line.txt;
     getAllLines().forEach(line => drawText(line))
 }
 
@@ -24,23 +29,23 @@ function renderStickers() {
         let drawnSticker = new Image();
         drawnSticker.src = sticker.src;
         drawnSticker.onload = () => {
-            gCtx.drawImage(drawnSticker, sticker.posX, sticker.posY, sticker.size, sticker.size);
+            gCtx.drawImage(drawnSticker, sticker.posX * gCanvasScale, sticker.posY * gCanvasScale, sticker.size * 10 * gCanvasScale, sticker.size * 10 * gCanvasScale);
         }
     })
 }
 
 function drawText(line) {
     gCtx.lineWidth = '2';
-    gCtx.strokeStyle = 'black';
-    gCtx.fillStyle = line.color;
-    gCtx.font = `${line.size * 3}px Impact`;
+    gCtx.strokeStyle = line.outline;
+    gCtx.fillStyle = line.filling;
+    gCtx.font = `${line.size * 3 * gCanvasScale}px Impact`;
     gCtx.textAlign = 'center';
-    gCtx.fillText(line.txt, line.posX, line.posY);
-    gCtx.strokeText(line.txt, line.posX, line.posY);
+    gCtx.fillText(line.txt, line.posX * gCanvasScale, line.posY * gCanvasScale);
+    gCtx.strokeText(line.txt, line.posX * gCanvasScale, line.posY * gCanvasScale);
 }
 
 function onUpdateCanvas() {
-    updateLine();
+    updateLine(document.querySelector('.line-text').value);
     renderCanvas();
 }
 
@@ -61,26 +66,29 @@ function renderStickerButtons() {
 
 //Canvas mouse functions
 function onCanvasMouseDown(ev) {
-    let aspectRatio = document.querySelector('.canvas-container').clientWidth / 600;
     gGrabbedItem = getAllLines().find(line => {
         gCtx.font = `${line.size * 3}px Impact`;
         let txt = line.txt;
         let textWidth = gCtx.measureText(txt).width;
         let textHeight = gCtx.measureText('M').width;
-        return ev.offsetX > (line.posX - (textWidth / 2)) * aspectRatio && ev.offsetX < (line.posX + (textWidth / 2)) * aspectRatio &&
-            ev.offsetY > (line.posY - textHeight * 1.2) * aspectRatio && ev.offsetY < line.posY * aspectRatio;
+        return ev.offsetX > (line.posX - (textWidth / 2)) * gCanvasScale && ev.offsetX < (line.posX + (textWidth / 2)) * gCanvasScale &&
+            ev.offsetY > (line.posY - textHeight * 1.2) * gCanvasScale && ev.offsetY < (line.posY + textHeight) * gCanvasScale;
     });
-
     if (gGrabbedItem) {
-        document.querySelector('#line-text').value = getLine().txt;
+        document.querySelector('.line-text').value = getLine().txt;
         document.body.style.cursor = 'grab';
     } else {
         gGrabbedItem = getAllStickers().find(sticker => {
-            return ev.offsetX > sticker.posX * aspectRatio && ev.offsetX < (sticker.posX + sticker.size) * aspectRatio &&
-                ev.offsetY > sticker.posY * aspectRatio && ev.offsetY < (sticker.posY + sticker.size) * aspectRatio;
-        })
+                return ev.offsetX > sticker.posX * gCanvasScale && ev.offsetX < (sticker.posX + sticker.size * 10) * gCanvasScale &&
+                    ev.offsetY > sticker.posY * gCanvasScale && ev.offsetY < (sticker.posY + sticker.size * 10) * gCanvasScale;
+            }
+
+        )
     }
-    if (gGrabbedItem) updateIndex();
+    if (gGrabbedItem) {
+        updateIndex();
+        setSelectedItemType(gGrabbedItem.type);
+    }
 }
 
 function onCanvasRelease() {
@@ -93,21 +101,20 @@ function onCanvasMouseMove(ev) {
     isOnText(ev);
     if (!gGrabbedItem) return;
     document.body.style.cursor = 'grab';
-    let aspectRatio = 600 / document.querySelector('.canvas-container').clientWidth;
-    gGrabbedItem.posX += ev.movementX * aspectRatio;
-    gGrabbedItem.posY += ev.movementY * aspectRatio;
+    let gCanvasScale = 600 / document.querySelector('.canvas-container').clientWidth;
+    gGrabbedItem.posX += ev.movementX * gCanvasScale;
+    gGrabbedItem.posY += ev.movementY * gCanvasScale;
     renderCanvas();
 }
 
 function isOnText(ev) {
-    let aspectRatio = document.querySelector('.canvas-container').clientWidth / 600;
     let isOn = getAllLines().some(line => {
         gCtx.font = `${line.size * 3}px Impact`;
         let txt = line.txt;
         let textWidth = gCtx.measureText(txt).width;
         let textHeight = gCtx.measureText('M').width;
-        return ev.offsetX > (line.posX - (textWidth / 2)) * aspectRatio && ev.offsetX < (line.posX + (textWidth / 2)) * aspectRatio &&
-            ev.offsetY > (line.posY - textHeight * 1.2) * aspectRatio && ev.offsetY < line.posY * aspectRatio;
+        return ev.offsetX > (line.posX - (textWidth / 2)) * gCanvasScale && ev.offsetX < (line.posX + (textWidth / 2)) * gCanvasScale &&
+            ev.offsetY > (line.posY - textHeight * 1.2) * gCanvasScale && ev.offsetY < line.posY * gCanvasScale;
     });
     (isOn) ? document.body.style.cursor = 'pointer': document.body.style.cursor = 'auto';
 }
@@ -115,7 +122,6 @@ function isOnText(ev) {
 //Canvas touch events
 
 function onCanvasTouchStart(ev) {
-    let aspectRatio = document.querySelector('.canvas-container').clientWidth / 600;
     let rect = ev.target.getBoundingClientRect();
     let offsetX = ev.targetTouches[0].pageX - rect.left;
     let offsetY = ev.targetTouches[0].pageY - rect.top;
@@ -125,29 +131,32 @@ function onCanvasTouchStart(ev) {
         let txt = line.txt;
         let textWidth = gCtx.measureText(txt).width;
         let textHeight = gCtx.measureText('M').width;
-        return offsetX > (line.posX - (textWidth / 2)) * aspectRatio && offsetX < (line.posX + (textWidth / 2)) * aspectRatio &&
-            offsetY > (line.posY - textHeight * 1.2) * aspectRatio && offsetY < line.posY * aspectRatio;
+        return offsetX > (line.posX - (textWidth / 2)) * gCanvasScale && offsetX < (line.posX + (textWidth / 2)) * gCanvasScale &&
+            offsetY > (line.posY - textHeight * 1.2) * gCanvasScale && offsetY < line.posY * gCanvasScale;
     });
     if (gGrabbedItem) {
-        document.querySelector('#line-text').value = getLine().txt;
+        document.querySelector('.line-text').value = getLine().txt;
         document.body.style.cursor = 'grab';
     } else {
         gGrabbedItem = getAllStickers().find(sticker => {
-            return offsetX > sticker.posX * aspectRatio && offsetX < (sticker.posX + sticker.size) * aspectRatio &&
-                offsetY > sticker.posY * aspectRatio && offsetY < (sticker.posY + sticker.size) * aspectRatio;
+            return offsetX > sticker.posX * gCanvasScale && offsetX < (sticker.posX + sticker.size * 10) * gCanvasScale &&
+                offsetY > sticker.posY * gCanvasScale && offsetY < (sticker.posY + sticker.size * 10) * gCanvasScale;
         })
     }
-    if (gGrabbedItem) updateIndex();
+    if (gGrabbedItem) {
+        updateIndex();
+        setSelectedItemType(gGrabbedItem.type);
+    }
 }
 
 function onCanvasTouchMove(ev) {
     if (!gGrabbedItem) return;
-    let aspectRatio = 600 / document.querySelector('.canvas-container').clientWidth;
+    let gCanvasScale = 600 / document.querySelector('.canvas-container').clientWidth;
     let rect = ev.target.getBoundingClientRect();
     let offsetX = ev.targetTouches[0].pageX - rect.left;
     let offsetY = ev.targetTouches[0].pageY - rect.top;
-    let movementX = (offsetX - gDragInitPos.offsetX) * aspectRatio;
-    let movementY = (offsetY - gDragInitPos.offsetY) * aspectRatio;
+    let movementX = (offsetX - gDragInitPos.offsetX) * gCanvasScale;
+    let movementY = (offsetY - gDragInitPos.offsetY) * gCanvasScale;
     gDragInitPos = { offsetX, offsetY };
     gGrabbedItem.posX += movementX;
     gGrabbedItem.posY += movementY;
@@ -157,19 +166,13 @@ function onCanvasTouchMove(ev) {
 
 //Edit Button Functions
 
-function onUpdateFont(num) {
-    updateLineFontSize(num);
-    renderCanvas();
-}
 
-function onSwitchLine() {
-    switchLine();
-    document.querySelector('#line-text').value = getLine().txt;
-}
 
 function onAddLine() {
     addLine();
     renderCanvas();
+    document.querySelector('.line-text').value = getLine().txt;
+
 }
 
 function onAddSticker(id) {
@@ -177,9 +180,20 @@ function onAddSticker(id) {
     renderCanvas();
 }
 
-function onUpdateStickerSize(num) {
-    if (!gMeme.stickers.length) return;
-    updateStickerSize(num);
+function onUpdateItemSize(changeBy) {
+    if (getMeme().selectedItemType === 'line') updateLineFontSize(changeBy);
+    else updateStickerSize(changeBy);
+    renderCanvas();
+}
+
+function onColorChange(newColor, toChange) {
+    changeColor(newColor, toChange);
+    renderCanvas();
+}
+
+function onDelete() {
+    deleteItem();
+    if (!getMeme().lines.length) document.querySelector('.line-text').value = '';
     renderCanvas();
 }
 
@@ -203,4 +217,5 @@ function onSaveMeme() {
         memeData: getMeme()
     });
     saveMeme(savedMemes);
+    togglePopupModal('saved!');
 }

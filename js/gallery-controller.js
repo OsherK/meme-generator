@@ -20,18 +20,34 @@ function renderImgs(str = '') {
     document.querySelector('.gallery-grid').innerHTML = strHtml;
 }
 
-function onSearchInput(val) {
-    for (let key in gKeywords) {
-        if (key === val) increaseKeywordCount(key);
-    }
+function onSearchInput(inputVal) {
+    getKeywords().forEach(keywordObj => {
+        if (keywordObj.keyword === inputVal) increaseKeywordCount(keywordObj.keyword)
+    })
     renderKeywordList();
-    renderImgs(val);
+    renderImgs(inputVal);
+}
+
+function onKeywordSubmit(searchEl) {
+    if (event.key === 'Enter') {
+        addKeyword(searchEl.value);
+        renderKeywordList();
+    }
+}
+
+function onToggleDropDownList() {
+    document.querySelector('.drop-down-list').classList.toggle('toggled');
+}
+
+function onToggleMobileList() {
+    document.querySelector('.mobile-drop-down .drop-down-list').classList.toggle('toggled');
 }
 
 function renderKeywordList() {
     let listHtml = '';
     let dropDownListHtml = '';
-    let keywordsArray = getKeywordsArray();
+    let mobileDropDownHtml = '';
+    let keywordsArray = getKeywords();
     for (let i = 0; i < keywordsArray.length; i++) {
         let fontSize = 15 + keywordsArray[i].value;
         if (fontSize >= 25) fontSize = 25;
@@ -40,7 +56,9 @@ function renderKeywordList() {
         `
         if (i < 5) listHtml += liHtml;
         else dropDownListHtml += liHtml;
+        mobileDropDownHtml += liHtml;
     }
+    document.querySelector('.mobile-drop-down .drop-down-list').innerHTML = mobileDropDownHtml;
     document.querySelector('.keyword-list').innerHTML = listHtml;
     document.querySelector('.drop-down-list').innerHTML = dropDownListHtml;
 }

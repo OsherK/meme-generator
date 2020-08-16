@@ -11,13 +11,12 @@ function onInit() {
     document.querySelector('.design-interface').style.display = 'none';
     document.querySelector('.saved-memes').style.display = 'none';
     renderKeywordList();
-    getKeywordsArray();
 }
 
 function onRenderSavedMemes() {
     document.body.classList.remove('in-editor');
     if (!loadSavedMemes()) {
-        alert('no saved memes!');
+        togglePopupModal('There are no saved memes!');
         return;
     }
     document.querySelector('.nav-gallery').classList.remove('curr-page');
@@ -25,7 +24,7 @@ function onRenderSavedMemes() {
     document.querySelector('.gallery').style.display = 'none';
     document.querySelector('.design-interface').style.display = 'none';
     document.querySelector('.saved-memes').style.display = 'block';
-    renderMemes();
+    renderSavedMemes();
 }
 
 //To the editor
@@ -36,6 +35,10 @@ function onRenderEditor(id) {
     updateSelectedImg(id);
     document.querySelector('.design-interface').style.display = 'flex';
     document.querySelector('.gallery').style.display = 'none';
+    let parentRect = gCanvas.parentNode.getBoundingClientRect();
+    gCanvas.width = parentRect.width;
+    gCanvas.height = parentRect.height;
+    updateCanvasScale();
     renderCanvas();
     renderStickerButtons();
 }
@@ -48,4 +51,10 @@ function onRenderGallery() {
     document.querySelector('.design-interface').style.display = 'none';
     document.querySelector('.saved-memes').style.display = 'none';
     document.querySelector('.gallery').style.display = 'block';
+}
+
+function togglePopupModal(newMsg = '') {
+    document.querySelector('.popup-modal').classList.toggle('modal-shown');
+    document.querySelector('.popup-modal span').innerText = newMsg;
+    document.querySelector('.screen').classList.toggle('screen-shown');
 }
