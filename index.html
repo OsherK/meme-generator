@@ -13,7 +13,7 @@
 <body class="flex flex-col space-between align-center" onload="onInit()">
     <nav class="flex space-between">
         <img onclick="onRenderGallery()" src="img\menu-icons\Logo.png" alt="Sad Pepe" class="logo">
-        <ul class="flex clean-list nav-ul space-around">
+        <ul class="flex clean-list nav-ul space-around align-center">
             <li class="nav-li nav-gallery curr-page" onclick="onRenderGallery()"><span>GALLERY</span></li>
             <li class="nav-li nav-saved" onclick="onRenderSavedMemes()"><span>SAVED</span></li>
         </ul>
@@ -77,7 +77,7 @@
         <div class="screen"></div>
         <div class="popup-modal flex flex-col align-center space-around">
             <span>Working</span>
-            <button onclick="togglePopupModal()">Close</button>
+            <button class="menu-btn" onclick="togglePopupModal()">Close</button>
         </div>
     </div>
     <footer><span>coffee rights&#169;</span></footer>

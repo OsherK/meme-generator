@@ -129,9 +129,7 @@ function deleteItem() {
 }
 
 function changeColor(newColor, toChange) {
-    let selectedItem = getSelectedItem();
-    if (selectedItem.type !== 'line') return;
-    selectedItem[toChange] = newColor;
+    getSelectedItem()[toChange] = newColor;
 }
 
 function addLine() {

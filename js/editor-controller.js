@@ -19,6 +19,7 @@ function renderCanvas(id) {
 }
 
 function renderText() {
+    if (!getMeme().lines.length) return;
     let line = getLine();
     document.querySelector('.line-text').value = line.txt;
     getAllLines().forEach(line => drawText(line))
@@ -187,6 +188,10 @@ function onUpdateItemSize(changeBy) {
 }
 
 function onColorChange(newColor, toChange) {
+    if (getSelectedItem().type !== 'line') {
+        togglePopupModal('Can\'t change the color of a sticker!');
+        return;
+    }
     changeColor(newColor, toChange);
     renderCanvas();
 }

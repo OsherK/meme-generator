@@ -93,7 +93,7 @@ footer {
     background-color: #383B42;
     color: #fefefe;
     position: absolute;
-    top: 0%;
+    top: -100%;
     left: 50%;
     transform: translate(-50%, -50%);
     border: 5px solid #0c98b9;
@@ -148,6 +148,7 @@ nav {
 .nav-ul {
     width: 100%;
     max-width: 50%;
+    min-width: fit-content;
     padding: 0px;
 }
 
@@ -169,9 +170,6 @@ nav {
 .nav-li:hover {
     background-color: #fff;
     color: #88d2c4;
-}
-
-.nav-li:hover {
     cursor: pointer;
 }
 
@@ -537,5 +535,11 @@ nav {
 @media(max-width: 530px) {
     html {
         font-size: 13px;
+    }
+}
+
+@media(max-width: 400px) {
+    html {
+        font-size: 10px;
     }
 }
